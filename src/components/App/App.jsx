@@ -57,16 +57,20 @@ export default class App extends Component {
     if (page > 1) {
       const CARD_HEIGHT = 260;
       window.scrollBy({
-        top: CARD_HEIGHT * 2,
+        top: CARD_HEIGHT * 4,
         behavior: 'smooth',
       });
     }
   }
 
   onSubmit = searchData => {
-    if (searchData === this.state.searchData) {
+    if (searchData.trim() === '') {
+      this.setState({ images: [] });
+      return toast.error('Enter the meaning for search');
+    } else if (searchData === this.state.searchData) {
       return;
     }
+
     this.setState({
       searchData: searchData,
       page: 1,
