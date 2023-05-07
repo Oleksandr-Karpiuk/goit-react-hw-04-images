@@ -27,19 +27,26 @@ export default class App extends Component {
     if (prevPage !== page || prevSearchData !== searchData) {
       try {
         this.setState({ isLoading: true });
-        const response = fetchImages(searchData, page);
-        response.then(data => {
-          data.data.hits.length === 0
-            ? toast.error('Nothing found')
-            : data.data.hits.forEach(({ id, webformatURL, largeImageURL }) => {
-                !images.some(image => image.id === id) &&
-                  this.setState(({ images }) => ({
-                    images: [...images, { id, webformatURL, largeImageURL }],
-                  }));
-              });
-          this.setState({ isLoading: false });
-        });
+        const response = await fetchImages(searchData, page);
+        const data = await response.json();
+        if (data.data.hits.length === 0) {
+          toast.error('Nothing found');
+        } else {
+          data.data.hits.forEach(({ id, webformatURL, largeImageURL }) => {
+            try {
+              if (!images.some(image => image.id === id)) {
+                this.setState(({ images }) => ({
+                  images: [...images, { id, webformatURL, largeImageURL }],
+                }));
+              }
+            } catch (error) {
+              console.error(error);
+            }
+          });
+        }
+        this.setState({ isLoading: false });
       } catch (error) {
+        console.error(error);
         this.setState({ error, isLoading: false });
       }
     }
