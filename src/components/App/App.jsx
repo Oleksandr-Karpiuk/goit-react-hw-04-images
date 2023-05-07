@@ -20,7 +20,7 @@ export default class App extends Component {
     error: null,
   };
 
-  componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(prevProps, prevState) {
     const prevPage = prevState.page;
     const prevSearchData = prevState.searchData;
     const { searchData, page, images } = this.state;
