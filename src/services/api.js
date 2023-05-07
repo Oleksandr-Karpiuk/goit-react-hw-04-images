@@ -12,5 +12,5 @@ async function fetchImages(searchQuery, page) {
     `${BASE_URL}?key=${API_KEY}&q=${searchQuery}${properties}&page=${page}&per_page=${PER_PAGE}`
   );
 
-  return response;
+  return response.data;
 }

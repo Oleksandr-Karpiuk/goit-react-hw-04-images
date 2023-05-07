@@ -13,11 +13,10 @@ export default class App extends Component {
   state = {
     searchData: '',
     images: [],
-    page: 0,
+    page: 1,
     largeImage: '',
     showModal: false,
     isLoading: false,
-    error: null,
   };
 
   async componentDidUpdate(prevProps, prevState) {
@@ -27,35 +26,45 @@ export default class App extends Component {
     if (prevPage !== page || prevSearchData !== searchData) {
       try {
         this.setState({ isLoading: true });
-        const response = await fetchImages(searchData, page);
-        const data = await response.json();
-        if (data.data.hits.length === 0) {
-          toast.error('Nothing found');
-        } else {
-          data.data.hits.forEach(({ id, webformatURL, largeImageURL }) => {
-            try {
-              if (!images.some(image => image.id === id)) {
-                this.setState(({ images }) => ({
-                  images: [...images, { id, webformatURL, largeImageURL }],
-                }));
-              }
-            } catch (error) {
-              console.error(error);
-            }
-          });
+        const data = await fetchImages(searchData, page);
+        if (data.hits.length === 0) {
+          this.setState({ images: [] });
+          return toast.error('Nothing found');
         }
-        this.setState({ isLoading: false });
+
+        const newData = data.hits.reduce(
+          (acc, { id, webformatURL, largeImageURL }) => {
+            if (images.filter(image => image.id === id).length === 0) {
+              acc.push({ id, webformatURL, largeImageURL });
+            }
+            return acc;
+          },
+          []
+        );
+
+        if (newData.length > 0) {
+          this.setState(({ images }) => ({
+            images: [...images, ...newData],
+          }));
+        }
       } catch (error) {
-        console.error(error);
-        this.setState({ error, isLoading: false });
+        toast.error(error.message);
+      } finally {
+        this.setState({ isLoading: false });
       }
+    }
+
+    if (page > 1) {
+      const CARD_HEIGHT = 260;
+      window.scrollBy({
+        top: CARD_HEIGHT * 2,
+        behavior: 'smooth',
+      });
     }
   }
 
   onSubmit = searchData => {
-    if (searchData.trim() === '') {
-      return toast.error('Enter the meaning for search');
-    } else if (searchData === this.state.searchData) {
+    if (searchData === this.state.searchData) {
       return;
     }
     this.setState({
