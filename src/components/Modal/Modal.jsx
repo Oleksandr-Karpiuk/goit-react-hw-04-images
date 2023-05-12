@@ -1,35 +1,41 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
+import { useKeyPress } from 'react-use';
 import css from './Modal.module.css';
 import PropTypes from 'prop-types';
 
-export default class Modal extends Component {
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
-  }
+export default function Modal({ toggleModal, largeImage }) {
+  const escPress = useKeyPress('Escape');
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
-  }
+  useEffect(() => {
+    escPress && toggleModal();
+  }, [escPress, toggleModal]);
 
-  handleKeyDown = e => {
-    e.code === 'Escape' && this.props.toggleModal();
+  /*
+  Або може бути варіант без react-use з використанням обробника подій
+   
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  });
+
+  const handleKeyDown = e => {
+    e.code === 'Escape' && toggleModal();
+  };
+  */
+
+  const handleBackdropClick = e => {
+    e.target === e.currentTarget && toggleModal();
   };
 
-  handleBackdropClick = e => {
-    e.target === e.currentTarget && this.props.toggleModal();
-  };
-
-  render() {
-    const { handleBackdropClick } = this;
-    const { largeImage } = this.props;
-    return (
-      <div className={css.overlay} onClick={handleBackdropClick}>
-        <div className={css.modal}>
-          <img src={largeImage} alt="" />
-        </div>
+  return (
+    <div className={css.overlay} onClick={handleBackdropClick}>
+      <div className={css.modal}>
+        <img src={largeImage} alt="" />
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 Modal.propTypes = {
