@@ -88,7 +88,9 @@ export default function App() {
       {images.length !== 0 && (
         <ImageGallery images={images} openModal={openModal} />
       )}
-      {showModal && <Modal toggleModal={toggleModal} largeImage={largeImage} />}
+      {showModal && (
+        <Modal toggleModal={() => toggleModal()} largeImage={largeImage} />
+      )}
       {isLoading && (
         <Dna
           visible={true}
