@@ -12,7 +12,7 @@ export default function Modal({ toggleModal, largeImage }) {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  });
+  }, [toggleModal]);
 
   const handleBackdropClick = e => {
     e.target === e.currentTarget && toggleModal();
