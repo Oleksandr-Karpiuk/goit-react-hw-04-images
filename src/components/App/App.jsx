@@ -79,7 +79,7 @@ export default function App() {
   };
 
   const toggleModal = () => {
-    setShowModal(prevshowModal => !prevshowModal);
+    setShowModal(!showModal);
   };
 
   return (
