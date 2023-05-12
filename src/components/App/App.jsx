@@ -56,15 +56,15 @@ export default function App() {
     }
   }
 
-  const onSubmit = searchData => {
-    if (searchData.trim() === '') {
+  const onSubmit = newSearchData => {
+    if (newSearchData.trim() === '') {
       setImages([]);
       return toast.error('Enter the meaning for search');
-    } else if (!searchData) {
+    } else if (newSearchData === searchData) {
       return;
     }
 
-    setSearchData(searchData);
+    setSearchData(newSearchData);
     setPage(1);
     setImages([]);
   };
@@ -79,7 +79,7 @@ export default function App() {
   };
 
   const toggleModal = () => {
-    setShowModal(prevShowModal => !prevShowModal);
+    setShowModal(prevshowModal => !prevshowModal);
   };
 
   return (
