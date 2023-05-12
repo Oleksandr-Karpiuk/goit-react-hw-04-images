@@ -24,9 +24,10 @@ export default function App() {
     }
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchData, page]);
 
-  const fetchData = async () => {
+  async function fetchData() {
     try {
       setIsLoading(true);
       const data = await fetchImages(searchData, page);
@@ -53,7 +54,7 @@ export default function App() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }
 
   const onSubmit = searchData => {
     if (searchData.trim() === '') {
