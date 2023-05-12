@@ -18,7 +18,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (searchData.trim() === '') {
+    if (!searchData.trim()) {
       setImages([]);
       return;
     }
