@@ -1,18 +1,19 @@
 import { useEffect } from 'react';
-import { useKeyPress } from 'react-use';
+// import { useKeyPress } from 'react-use';
 import css from './Modal.module.css';
 import PropTypes from 'prop-types';
 
 export default function Modal({ toggleModal, largeImage }) {
-  const escPress = useKeyPress('Escape');
+  // const escPress = useKeyPress('Escape');
 
-  useEffect(() => {
-    escPress && toggleModal();
-  }, [escPress, toggleModal]);
+  // useEffect(() => {
+  //   escPress && toggleModal();
+  // }, [escPress, toggleModal]);
 
   /*
   Або може бути варіант без react-use з використанням обробника подій
-   
+   */
+
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => {
@@ -23,7 +24,6 @@ export default function Modal({ toggleModal, largeImage }) {
   const handleKeyDown = e => {
     e.code === 'Escape' && toggleModal();
   };
-  */
 
   const handleBackdropClick = e => {
     e.target === e.currentTarget && toggleModal();
