@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 
 export default function Modal({ toggleModal, largeImage }) {
   useEffect(() => {
+    const handleKeyDown = e => {
+      e.code === 'Escape' && toggleModal();
+    };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   });
-
-  const handleKeyDown = e => {
-    e.code === 'Escape' && toggleModal();
-  };
 
   const handleBackdropClick = e => {
     e.target === e.currentTarget && toggleModal();
